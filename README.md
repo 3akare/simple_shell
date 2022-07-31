@@ -1,6 +1,6 @@
 # Shelly - Simple Shell
 
-**shelly** is a simple UNIX command language interpreter that reads commnads from either a file or standard input and excutes them.
+**Shelly** is a simple UNIX command language interpreter that reads commands from either a file or standard input and excutes them.
 
 # Usage
 
