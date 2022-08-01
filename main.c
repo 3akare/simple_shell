@@ -1,7 +1,7 @@
-/**
+/*
  * File: main.c
  * Auth: Michael Rowland
- * 	David Bakare
+ * David Bakare
  */
 
 #include "main.h"
