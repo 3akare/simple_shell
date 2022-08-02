@@ -1,7 +1,7 @@
 /*
  * File: main.c
  * Auth: Michael Rowland
- * David Bakare
+ *	 David Bakare
  */
 
 #include "main.h"
@@ -15,5 +15,7 @@
  */
 int main(int argc, char **argv)
 {
-	return (0);
+	run_sh_loop(); /*run shell loop until exit condition is meet*/
+
+	exit(EXIT_SUCCESS);
 }

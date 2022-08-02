@@ -21,5 +21,9 @@
  */
 
 int _putchar(int c);
+void run_sh_loop(void);
+char *get_sh_input(void);
+char **get_sh_tokens(char *line);
+int execute_sh(char **args);
 
 #endif
