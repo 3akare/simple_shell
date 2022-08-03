@@ -21,13 +21,15 @@
 #define TOK_BUF_SIZE 4
 #define DELIM " \t\n\r\a"
 
-typedef char *string;
+typedef char *string; /* redefining char pointer type as "string", :)*/
 
 /*
  * helper functions
  */
 
 int _putchar(int c);
+unsigned int is_delim(char c, char *delim);
+char *_strtok(char *str, char *delim);
 
 /*
  * shell functions - basic shell functions

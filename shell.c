@@ -74,7 +74,7 @@ char **get_sh_tokens(string line)
 		perror("Error: allocation error");
 		exit(EXIT_FAILURE);
 	}
-	token = strtok(line, DELIM);/*Create tokens from the str 'line'*/
+	token = _strtok(line, DELIM);/*Create tokens from the str 'line'*/
 	while (token != NULL)
 	{
 		tokens[index] = token;
@@ -90,7 +90,7 @@ char **get_sh_tokens(string line)
 				exit(EXIT_FAILURE);
 			}
 		}
-		token = strtok(NULL, DELIM);
+		token = _strtok(NULL, DELIM);
 	}
 	tokens[index] = NULL;
 	return (tokens);
@@ -119,7 +119,7 @@ int execute_sh(char **args)
 	{
 		if (execvp(args[0], args) == -1) /*Execute args[0] if success*/
 			perror("Error: "); /*To the stderr if args[0] not found*/
-		exit(EXIT_FAILURE); /* Exits child process cleanly */
+			exit(EXIT_FAILURE); /* Exits child process cleanly */
 	}
 	else if (child_pid < 0) /* Enter conditional block if fork failed */
 	{
