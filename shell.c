@@ -1,24 +1,31 @@
+/*
+ * File:shell.c
+ * Auth: Michael Rowland
+ * David Bakare
+ */
+
 #include "main.h"
 
 /**
- * run_sh_loop - function entry point
+ * start_shell - function entry point
  * Desc: Runs a loop in the shell until exit condition is met
  *
  * Return: void
  */
-void run_sh_loop(void)
+
+void start_shell(void)
 {
-	char *input;
+	string input;
 	char **args;
 	int status;
 
 	do {
-		printf("> ");
+		printf("($) ");
 		input = get_sh_input(); /* Get input form the stdin */
-		args = get_sh_tokens(input); /* split the 'input' into args */
+		args = get_sh_tokens(input); /* splits the 'input' into args*/
 		status = execute_sh(args); /* execute sh using args */
 
-		free(input); /* Clear str at address for next iteration */
+		free(input); /* Clear input at address for next iteration */
 		free(args); /* Clear args list for next iteration */
 	} while (status);
 }
@@ -28,97 +35,77 @@ void run_sh_loop(void)
  * get_sh_input - function entry point
  * Desc: Reads the input from the stdin and stores in a buffer
  *
- * Return: a buffer containing the input
+ * Return: a character pointer
  */
-char *get_sh_input(void)
+string get_sh_input(void)
 {
-	int bufsize = 1024;
-	int position = 0;
-	char *buffer = malloc(sizeof(char) * bufsize);
-	int c;
+	string buffer;
+	size_t buf_size = BUF_SIZE;
+	int i;
 
-	if (!buffer)
+	i = getline(&buffer, &buf_size, stdin);
+	if (i == -1)
 	{
-		perror("Error: allocation error");
-		exit(EXIT_FAILURE);
+		perror("Error!, getline failed");
 	}
-	while (1)
+	if (buffer == NULL)
 	{
-		c = getchar(); /* Reads just a single character from the stdin */
-
-		if (c == EOF || c == '\n') /*If we reach the end of the input*/
-		{
-			buffer[position] = '\0'; /*add a null byte at endof buf*/
-			return (buffer);
-		}
-		else
-			buffer[position] = c;
-		position++;
-
-		if (position >= bufsize)
-		{
-			bufsize += 1024;
-			buffer = realloc(buffer, bufsize); /* Realloc buffer*/
-			if (!buffer)
-			{
-				perror("Error: reallocation error");
-				exit(EXIT_FAILURE);
-			}
-		}
+		perror("Error!, Bad Arguments");
 	}
+	return (buffer);
 }
 
 
 /**
  * get_sh_tokens - function entry point
- * @line: str to separate into tokens
- * Desc: separate line into tokens using a delimiter
+ * @line: str to be separated into tokens
+ * Desc: separates line into tokens using a delimiter
  *
- * Return: a pointer to an array containing the tokens
+ * Return: an array of char pointers
  */
-char **get_sh_tokens(char *line)
+char **get_sh_tokens(string line)
 {
-	int bufsize = 64, position = 0;
+	int bufsize = TOK_BUF_SIZE, index = 0;
 	char **tokens = malloc(bufsize * sizeof(char *));
-	char *token;
+	string token;
 
-	if (!tokens)
+	if (tokens == NULL)
 	{
 		perror("Error: allocation error");
 		exit(EXIT_FAILURE);
 	}
-	token = strtok(line, " \t\r\n\a");/*Create tokens from the str 'line'*/
+	token = strtok(line, DELIM);/*Create tokens from the str 'line'*/
 	while (token != NULL)
 	{
-		tokens[position] = token;
-		position++;
+		tokens[index] = token;
+		index++;
 
-		if (position >= bufsize)
+		if (index >= bufsize)
 		{
-			bufsize += 64;
+			bufsize += TOK_BUF_SIZE;
 			tokens = realloc(tokens, bufsize * sizeof(char *));
-			if (!tokens)
+			if (tokens == NULL)
 			{
 				perror("Error: reallocation error");
 				exit(EXIT_FAILURE);
 			}
 		}
-		token = strtok(NULL, " \t\r\n\a");
+		token = strtok(NULL, DELIM);
 	}
-	tokens[position] = NULL;
+	tokens[index] = NULL;
 	return (tokens);
 }
 
 /**
  * execute_sh - function entry point
- * @args: an array of pointers to tokens
- * Desc: Launches the shell and uses the tokens as commands
+ * @args: an array of char pointers
+ * Desc: Uses args as commands and executes them
  *
  * Return: an int to signal end of shell
  */
 int execute_sh(char **args)
 {
-	pid_t child_pid, wpid;
+	pid_t child_pid;
 	int status;
 
 	if (args[0] == NULL)
@@ -130,7 +117,7 @@ int execute_sh(char **args)
 	child_pid = fork(); /* Create a child process from parent */
 	if (child_pid == 0) /* if fork is successful */
 	{
-		if (execve(args[0], args, NULL) == -1) /*Execute args[0] if success*/
+		if (execvp(args[0], args) == -1) /*Execute args[0] if success*/
 			perror("Error: "); /*To the stderr if args[0] not found*/
 		exit(EXIT_FAILURE); /* Exits child process cleanly */
 	}
@@ -141,7 +128,7 @@ int execute_sh(char **args)
 	else
 	{ /* Execute parent process after a successful fork */
 		do {  /* Wait for the child*/
-			wpid = waitpid(child_pid, &status, WUNTRACED);
+			waitpid(child_pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
 
