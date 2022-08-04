@@ -25,7 +25,8 @@ list directories content
 
 ```
 /home/bakare/simple_shell$ ls
-AUTHORS    a.out                helper.c  main.h   strtok.c                        README.md  builtin_functions.c  main.c    shell.c
+AUTHORS a.out  helper.c  main.h  strtok.c                        
+README.md  builtin_functions.c  main.c    shell.c
 
 ```
 
@@ -39,9 +40,8 @@ print name of current/working directory
 ## cat 
 concatenate files and print on the standard output
 ```
-/home/bakare/simple_shell$ cat main.c
-/*                                                                                  * File: main.c                                                                     * Auth: Michael Rowland                                                            * David Bakare
-...
+/home/bakare/simple_shell$ cat AUTHORS
+#This file contains all individuals that contributed content to this re...
 
 ```
 # Builtin functions
