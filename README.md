@@ -47,6 +47,7 @@ concatenate files and print on the standard output
 # Builtin functions
 
 ## cd 
+changes current/working directory
 ```
 /home/bakare/simple_shell$ pwd
 /home/bakare/simple_shell
@@ -59,6 +60,7 @@ concatenate files and print on the standard output
 /home/bakare$
 ```
 ## Exit 
+cause normal process termination
 ```
 /home/bakare/simple_shell$ exit
 ```
