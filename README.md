@@ -20,7 +20,7 @@ shelly
 
 # Usage
 
-## ls 
+## ls ##
 list directories content
 
 ```
@@ -30,14 +30,14 @@ README.md  builtin_functions.c  main.c    shell.c
 
 ```
 
-## pwd 
+## pwd ##
 print name of current/working directory
 ```
 /home/bakare/simple_shell$ pwd
 /home/bakare/simple_shell
 
 ```
-## cat 
+## cat ##
 concatenate files and print on the standard output
 ```
 /home/bakare/simple_shell$ cat AUTHORS
@@ -46,7 +46,7 @@ concatenate files and print on the standard output
 ```
 # Builtin functions
 
-## cd 
+## cd ##
 changes current/working directory
 ```
 /home/bakare/simple_shell$ pwd
@@ -59,7 +59,7 @@ changes current/working directory
 
 /home/bakare$
 ```
-## Exit 
+## Exit ##
 cause normal process termination
 ```
 /home/bakare/simple_shell$ exit
