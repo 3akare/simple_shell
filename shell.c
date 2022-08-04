@@ -16,14 +16,18 @@
 void start_shell(void)
 {
 	string input;
+	char  buffer_pwd[BUF_PWD];
 	char **args;
 	int status;
 
 	do {
-		printf("($) ");
+
+		printf("%s", getcwd(buffer, BUF_PWD));
+		/* prints the current working directory */
+		printf("$ ");
 		input = get_sh_input(); /* Get input form the stdin */
 		args = get_sh_tokens(input); /* splits the 'input' into args*/
-		status = execute_sh(args); /* execute sh using args */
+		status = shell_execute(args); /* execute sh using args */
 
 		free(input); /* Clear input at address for next iteration */
 		free(args); /* Clear args list for next iteration */
@@ -74,7 +78,7 @@ char **get_sh_tokens(string line)
 		perror("Error: allocation error");
 		exit(EXIT_FAILURE);
 	}
-	token = _strtok(line, DELIM);/*Create tokens from the str 'line'*/
+	token = _strtok(line, DELIM); /*Create tokens from the str 'line'*/
 	while (token != NULL)
 	{
 		tokens[index] = token;
@@ -94,6 +98,43 @@ char **get_sh_tokens(string line)
 	}
 	tokens[index] = NULL;
 	return (tokens);
+}
+
+/**
+ * shell_execute - executes arguments
+ * @args: an array of char pointers
+ *
+ * Return: a function
+ */
+
+int shell_execute(char **args)
+{
+	int i, number_builtin_func;
+	char *builtin_str[] = {
+		"cd",
+		"exit"
+	};
+	int (*builtin_func[])(char **) = {
+		&shell_cd,
+		&shell_exit
+	};
+
+	number_builtin_func = sizeof(builtin_str) / sizeof(string);
+
+	if (args[0] == NULL)
+	{
+		return (1);
+	}
+
+	for (i = 0; i < number_builtin_func; i++)
+	{
+		if (strcmp(args[0], builtin_str[i]) == 0)
+		{
+			return ((*builtin_func[i])(args));
+		}
+	}
+
+	return (execute_sh(args));
 }
 
 /**
@@ -118,8 +159,10 @@ int execute_sh(char **args)
 	if (child_pid == 0) /* if fork is successful */
 	{
 		if (execvp(args[0], args) == -1) /*Execute args[0] if success*/
+		{
 			perror("Error: "); /*To the stderr if args[0] not found*/
 			exit(EXIT_FAILURE); /* Exits child process cleanly */
+		}
 	}
 	else if (child_pid < 0) /* Enter conditional block if fork failed */
 	{

@@ -19,6 +19,7 @@
 
 #define BUF_SIZE 0
 #define TOK_BUF_SIZE 4
+#define BUF_PWD 100
 #define DELIM " \t\n\r\a"
 
 typedef char *string; /* redefining char pointer type as "string", :)*/
@@ -39,5 +40,12 @@ void start_shell(void);
 char *get_sh_input(void);
 char **get_sh_tokens(char *line);
 int execute_sh(char **args);
+
+/* builtin functions */
+
+int shell_cd(char **args);
+int shell_help(char **args);
+int shell_exit(char **args);
+int shell_execute(char **args);
 
 #endif
