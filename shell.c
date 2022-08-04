@@ -22,12 +22,13 @@ void start_shell(void)
 
 	do {
 
-		printf("%s", getcwd(buffer, BUF_PWD));
+		printf("%s", getcwd(buffer_pwd, BUF_PWD));
 		/* prints the current working directory */
 		printf("$ ");
 		input = get_sh_input(); /* Get input form the stdin */
 		args = get_sh_tokens(input); /* splits the 'input' into args*/
 		status = shell_execute(args); /* execute sh using args */
+		putchar('\n');
 
 		free(input); /* Clear input at address for next iteration */
 		free(args); /* Clear args list for next iteration */

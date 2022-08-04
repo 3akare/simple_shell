@@ -2,7 +2,7 @@
 
 **Shelly** is a simple UNIX command language interpreter that reads commands from either a file or standard input and executes them.
 
-# Usage
+# Invocation
 
 To invoke **shelly**, complie all `.c` files in the repository and run the resulting executable:
 
@@ -17,3 +17,54 @@ gcc -Wall -pedantic -Werror -Wextra -std=gnu89 *.c -o shelly
 alias shelly="./shelly"
 shelly
 ```
+
+# Usage
+
+## ls 
+list directories content
+
+```
+/home/bakare/simple_shell$ ls
+AUTHORS    a.out                helper.c  main.h   strtok.c                        README.md  builtin_functions.c  main.c    shell.c
+
+```
+
+## pwd 
+print name of current/working directory
+```
+/home/bakare/simple_shell$ pwd
+/home/bakare/simple_shell
+
+```
+## cat 
+concatenate files and print on the standard output
+```
+/home/bakare/simple_shell$ cat main.c
+/*                                                                                  * File: main.c                                                                     * Auth: Michael Rowland                                                            * David Bakare
+...
+
+```
+# Builtin functions
+
+## cd 
+```
+/home/bakare/simple_shell$ pwd
+/home/bakare/simple_shell
+
+/home/bakare/simple_shell$ cd ..
+
+/home/bakare$ pwd
+/home/bakare
+
+/home/bakare$
+```
+## Exit 
+```
+/home/bakare/simple_shell$ exit
+```
+# Authors #
+* David Bakare
+* Michael Rowland
+
+# Acknowledgemnts #
+This project was written as part of the curriculum for ALX-SE program
