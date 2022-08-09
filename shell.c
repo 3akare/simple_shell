@@ -45,8 +45,14 @@ string get_sh_input(void)
 	char ch;
 	string buffer;
 	int buf_size = BUF_SIZE, i = 0;
+
 	buffer = malloc(sizeof(string) * buf_size);
-	while(ch != '\n')
+	if (buffer == NULL)
+	{
+		perror("Error: allocation error");
+		exit(EXIT_FAILURE);
+	}
+	while (ch != '\n')
 	{
 		ch = getc(stdin);
 		buffer[i] = ch;
@@ -55,6 +61,11 @@ string get_sh_input(void)
 		{
 			buf_size += BUF_SIZE;
 			buffer = realloc(buffer, sizeof(string) * buf_size);
+			if (buffer == NULL)
+			{
+				perror("Error: allocation error");
+				exit(EXIT_FAILURE);
+			}
 		}
 	}
 	return (buffer);
