@@ -12,12 +12,14 @@ int shell_cd(char **args)
 	if (args[1] == NULL)
 	{
 		perror("Usage: cd [ filename ]");
+		exit(EXIT_FAILURE);
 	}
 	else
 	{
 		if (chdir(args[1]) != 0)
 		{
 			perror("Error!: unable to change directory");
+			exit(EXIT_FAILURE);
 		}
 	}
 	return (1);
