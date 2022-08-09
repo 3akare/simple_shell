@@ -5,17 +5,15 @@
 # Invocation
 
 To invoke **shelly**, complie all `.c` files in the repository and run the resulting executable:
-
-```
-gcc *.c -o shelly
-./shelly
-```
-or
-
 ```
 gcc -Wall -pedantic -Werror -Wextra -std=gnu89 *.c -o shelly
 alias shelly="./shelly"
 shelly
+```
+or 
+
+```
+.\run.sh
 ```
 
 # Usage
@@ -24,22 +22,17 @@ shelly
 
 ```
 /home/bakare/simple_shell$ ls
-AUTHORS a.out  helper.c  main.h  strtok.c                        
-README.md  builtin_functions.c  main.c    shell.c
-
+AUTHORS a.out  helper.c  main.h  strtok.c ...
 ```
-
 `pwd` - print name of current/working directory
 ```
 /home/bakare/simple_shell$ pwd
 /home/bakare/simple_shell
-
 ```
 `cat` - concatenate files and print on the standard output
 ```
 /home/bakare/simple_shell$ cat AUTHORS
 #This file contains all individuals that contributed content to this re...
-
 ```
 # Builtin functions
 
@@ -47,12 +40,9 @@ README.md  builtin_functions.c  main.c    shell.c
 ```
 /home/bakare/simple_shell$ pwd
 /home/bakare/simple_shell
-
 /home/bakare/simple_shell$ cd ..
-
 /home/bakare$ pwd
 /home/bakare
-
 /home/bakare$
 ```
 `Exit` - cause normal process termination
