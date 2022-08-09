@@ -31,6 +31,7 @@ typedef char *string; /* redefining char pointer type as "string", :)*/
 int _putchar(int c);
 unsigned int is_delim(char c, char *delim);
 char *_strtok(char *str, char *delim);
+void bin_check(char **args, char **envp);
 
 /*
  * shell functions - basic shell functions

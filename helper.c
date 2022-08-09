@@ -38,3 +38,33 @@ unsigned int is_delim(char c, string delim)
 	}
 	return (0);
 }
+
+/**
+ * bin_check - checks if the first char in @args is '/'
+ * if it isn't, it concatenates args[0] to "/usr/bin/"
+ *
+ * @args: An array of strings (commmands)
+ * @envp: An Array of strings (environment)
+ */
+
+void bin_check(char **args, char **envp)
+{
+	char cmd[100];
+	char binary[] = "/usr/bin/";
+
+	if (args[0][0] != '/')
+	{
+		strcpy(cmd, binary);
+		strcat(cmd, args[0]);
+		if (execve(cmd, args, envp) == -1)
+		{
+			perror("Error!");
+			exit(EXIT_FAILURE);
+		}
+	}
+	if (execve(args[0], args, envp) == -1) /*Execute args[0] if success*/
+	{
+		perror("Error!"); /*To the stderr if args[0] not found*/
+		exit(EXIT_FAILURE); /* Exits child process cleanly */
+	}
+}

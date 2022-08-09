@@ -28,8 +28,6 @@ void start_shell(void)
 		input = get_sh_input(); /* Get input form the stdin */
 		args = get_sh_tokens(input); /* splits the 'input' into args*/
 		status = shell_execute(args); /* execute sh using args */
-		putchar('\n');
-
 		free(input); /* Clear input at address for next iteration */
 		free(args); /* Clear args list for next iteration */
 	} while (status);
@@ -147,6 +145,13 @@ int shell_execute(char **args)
  */
 int execute_sh(char **args)
 {
+		char *envp[] = {
+		"Home=/",
+		"PATH=/bin:/usr/bin",
+		"TERM=xterm",
+		"LANG=C.UTF-8",
+		NULL
+	};
 	pid_t child_pid;
 	int status;
 
@@ -159,11 +164,7 @@ int execute_sh(char **args)
 	child_pid = fork(); /* Create a child process from parent */
 	if (child_pid == 0) /* if fork is successful */
 	{
-		if (execvp(args[0], args) == -1) /*Execute args[0] if success*/
-		{
-			perror("Error: "); /*To the stderr if args[0] not found*/
-			exit(EXIT_FAILURE); /* Exits child process cleanly */
-		}
+		bin_check(args, envp);
 	}
 	else if (child_pid < 0) /* Enter conditional block if fork failed */
 	{
