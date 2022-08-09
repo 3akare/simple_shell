@@ -42,18 +42,20 @@ void start_shell(void)
  */
 string get_sh_input(void)
 {
+	char ch;
 	string buffer;
-	size_t buf_size = BUF_SIZE;
-	int i;
-
-	i = getline(&buffer, &buf_size, stdin);
-	if (i == -1)
+	int buf_size = BUF_SIZE, i = 0;
+	buffer = malloc(sizeof(string) * buf_size);
+	while(ch != '\n')
 	{
-		perror("Error!, getline failed");
-	}
-	if (buffer == NULL)
-	{
-		perror("Error!, Bad Arguments");
+		ch = getc(stdin);
+		buffer[i] = ch;
+		i++;
+		if (i >= buf_size)
+		{
+			buf_size += BUF_SIZE;
+			buffer = realloc(buffer, sizeof(string) * buf_size);
+		}
 	}
 	return (buffer);
 }

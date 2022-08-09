@@ -17,7 +17,7 @@
 #include <errno.h>
 
 
-#define BUF_SIZE 0
+#define BUF_SIZE 100
 #define TOK_BUF_SIZE 4
 #define BUF_PWD 100
 #define DELIM " \t\n\r\a"

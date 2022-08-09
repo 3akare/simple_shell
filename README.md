@@ -13,7 +13,7 @@ shelly
 or 
 
 ```
-.\run.sh
+./run.sh
 ```
 
 # Usage
