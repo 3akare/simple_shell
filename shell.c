@@ -27,7 +27,7 @@ void start_shell(void)
 		printf("$ ");
 		input = get_sh_input(); /* Get input form the stdin */
 		args = get_sh_tokens(input); /* splits the 'input' into args*/
-		status = shell_execute(args); /* execute sh using args */
+		status = execute_sh(args); /* execute sh using args */
 		free(input); /* Clear input at address for next iteration */
 		free(args); /* Clear args list for next iteration */
 	} while (status);
@@ -68,6 +68,7 @@ string get_sh_input(void)
 			}
 		}
 	}
+	close(ch);
 	return (buffer);
 }
 
@@ -113,15 +114,15 @@ char **get_sh_tokens(string line)
 }
 
 /**
- * shell_execute - executes arguments
+ * execute_sh - executes arguments
  * @args: an array of char pointers
  *
  * Return: a function
  */
 
-int shell_execute(char **args)
+int execute_sh(char **args)
 {
-	int i, number_builtin_func;
+	int i; /*number_builtin_func;*/
 	char *builtin_str[] = {
 		"cd",
 		"exit"
@@ -131,14 +132,14 @@ int shell_execute(char **args)
 		&shell_exit
 	};
 
-	number_builtin_func = sizeof(builtin_str) / sizeof(string);
+	/*number_builtin_func = sizeof(builtin_str) / sizeof(string);*/
 
 	if (args[0] == NULL)
 	{
 		return (1);
 	}
 
-	for (i = 0; i < number_builtin_func; i++)
+	for (i = 0; i < 2; i++)
 	{
 		if (strcmp(args[0], builtin_str[i]) == 0)
 		{
@@ -146,17 +147,17 @@ int shell_execute(char **args)
 		}
 	}
 
-	return (execute_sh(args));
+	return (init_sh(args));
 }
 
 /**
- * execute_sh - function entry point
+ * init_sh - function entry point
  * @args: an array of char pointers
  * Desc: Uses args as commands and executes them
  *
  * Return: an int to signal end of shell
  */
-int execute_sh(char **args)
+int init_sh(char **args)
 {
 		char *envp[] = {
 		"Home=/",
@@ -165,14 +166,8 @@ int execute_sh(char **args)
 		"LANG=C.UTF-8",
 		NULL
 	};
-	pid_t child_pid;
+	pid_t child_pid, ppid;
 	int status;
-
-	if (args[0] == NULL)
-	{
-		perror("Error: no command entered :(");
-		return (1); /* Upon execution if no args are passed */
-	}
 
 	child_pid = fork(); /* Create a child process from parent */
 	if (child_pid == 0) /* if fork is successful */
@@ -189,6 +184,9 @@ int execute_sh(char **args)
 			waitpid(child_pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
+	ppid = getpid();
+	if (!isatty(fileno(stdin)))
+		kill(ppid, SIGINT);
 
 	return (1);
 }

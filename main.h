@@ -37,7 +37,7 @@ void start_shell(void);
 char *get_sh_input(void);
 char **get_sh_tokens(char *line);
 int execute_sh(char **args);
-int shell_execute(char **args);
+int init_sh(char **args);
 
 /* builtin functions */
 
