@@ -13,8 +13,8 @@
  *
  * Return: success (0), fail (1)
  */
-int main(int __attribute__((unused)) argc, char __attribute__((unused)) **argv)
+int main(int __attribute__((unused)) argc, char **argv)
 {
-	start_shell(); /*run shell loop until exit condition is met*/
+	start_shell(argv[0]); /*run shell loop until exit condition is met*/
 	exit(EXIT_SUCCESS);
 }

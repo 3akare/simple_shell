@@ -9,11 +9,12 @@
 /**
  * start_shell - function entry point
  * Desc: Runs a loop in the shell until exit condition is met
+ * @cmd: name of program
  *
  * Return: void
  */
 
-void start_shell(void)
+void start_shell(char *cmd)
 {
 	string input;
 	char  buffer_pwd[BUF_PWD];
@@ -27,7 +28,7 @@ void start_shell(void)
 		printf("$ ");
 		input = get_sh_input(); /* Get input form the stdin */
 		args = get_sh_tokens(input); /* splits the 'input' into args*/
-		status = execute_sh(args); /* execute sh using args */
+		status = execute_sh(args, cmd); /* execute sh using args */
 		free(input); /* Clear input at address for next iteration */
 		free(args); /* Clear args list for next iteration */
 	} while (status);
@@ -116,13 +117,14 @@ char **get_sh_tokens(string line)
 /**
  * execute_sh - executes arguments
  * @args: an array of char pointers
+ * @cmd: name of program
  *
  * Return: a function
  */
 
-int execute_sh(char **args)
+int execute_sh(char **args, char *cmd)
 {
-	int i; /*number_builtin_func;*/
+	int i, len_builtin_func;
 	char *builtin_str[] = {
 		"cd",
 		"exit"
@@ -132,14 +134,14 @@ int execute_sh(char **args)
 		&shell_exit
 	};
 
-	/*number_builtin_func = sizeof(builtin_str) / sizeof(string);*/
+	len_builtin_func = sizeof(builtin_str) / sizeof(string);
 
 	if (args[0] == NULL)
 	{
 		return (1);
 	}
 
-	for (i = 0; i < 2; i++)
+	for (i = 0; i < len_builtin_func; i++)
 	{
 		if (strcmp(args[0], builtin_str[i]) == 0)
 		{
@@ -147,17 +149,18 @@ int execute_sh(char **args)
 		}
 	}
 
-	return (init_sh(args));
+	return (init_sh(args, cmd));
 }
 
 /**
  * init_sh - function entry point
  * @args: an array of char pointers
+ * @cmd: name of program
  * Desc: Uses args as commands and executes them
  *
  * Return: an int to signal end of shell
  */
-int init_sh(char **args)
+int init_sh(char **args, char *cmd)
 {
 		char *envp[] = {
 		"Home=/",
@@ -172,7 +175,11 @@ int init_sh(char **args)
 	child_pid = fork(); /* Create a child process from parent */
 	if (child_pid == 0) /* if fork is successful */
 	{
-		bin_check(args, envp);
+		if (execve(args[0], args, envp) == -1)
+		{
+			perror(cmd);
+			exit(EXIT_FAILURE);
+		}
 	}
 	else if (child_pid < 0) /* Enter conditional block if fork failed */
 	{
@@ -186,7 +193,9 @@ int init_sh(char **args)
 	}
 	ppid = getpid();
 	if (!isatty(fileno(stdin)))
-		kill(ppid, SIGINT);
+	{
+		return (kill(ppid, SIGINT));
+	}
 
 	return (1);
 }

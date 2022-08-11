@@ -33,11 +33,11 @@ void bin_check(char **args, char **envp);
 
 /* shell functions - main shell functions */
 
-void start_shell(void);
+void start_shell(char *cmd);
 char *get_sh_input(void);
 char **get_sh_tokens(char *line);
-int execute_sh(char **args);
-int init_sh(char **args);
+int execute_sh(char **args, char *cmd);
+int init_sh(char **args, char *cmd);
 
 /* builtin functions */
 
