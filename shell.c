@@ -58,6 +58,8 @@ string get_sh_input(void)
 	while (ch != '\n')
 	{
 		ch = getc(stdin);
+		if (ch == EOF)
+			kill(getpid(), SIGINT);
 		buffer[index] = ch;
 		index++;
 		if (index >= buf_size)
@@ -126,30 +128,38 @@ char **get_sh_tokens(string line)
 
 int execute_sh(char **args, char *cmd)
 {
-	int i, len_builtin_func;
-	char *builtin_str[] = {
-		"cd",
-		"exit"
-	};
-	int (*builtin_func[])(char **) = {
-		&shell_cd,
-		&shell_exit
-	};
-
-	len_builtin_func = sizeof(builtin_str) / sizeof(string);
+	/*
+	*int i, *len_builtin_func;
+	*char *builtin_str[] = {
+	*	"cd",
+	*	"exit"
+	*};
+	*
+	*int (*builtin_func[])(char **) = {
+	*	&shell_cd,
+	*	&shell_exit
+	*};
+	*
+	*
+	*len_builtin_func = sizeof(builtin_str) / sizeof(string);
+	*/
 
 	if (args[0] == NULL)
 	{
 		return (1);
 	}
 
-	for (i = 0; i < len_builtin_func; i++)
-	{
-		if (strcmp(args[0], builtin_str[i]) == 0)
-		{
-			return (builtin_func[i](args));
-		}
-	}
+	/*
+	*for (i = 0; i < len_builtin_func; i++)
+	*{
+	*	if (strcmp(args[0], builtin_str[i]) == 0)
+	*	{
+	*		perror(cmd);
+	*		exit(EXIT_FAILURE);
+	*		return (builtin_func[i](args));
+	*	}
+	*}
+	*/
 
 	return (init_sh(args, cmd));
 }
