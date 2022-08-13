@@ -4,7 +4,7 @@
  * David Bakare
  */
 
-#include "main.h"
+#include "shell.h"
 
 /**
  * start_shell - function entry point
@@ -22,10 +22,12 @@ void start_shell(char *cmd)
 	int status;
 
 	do {
-
-		printf("%s", getcwd(buffer_pwd, BUF_PWD));
-		/* prints the current working directory */
-		printf("$ ");
+		if (isatty(fileno(stdin)))
+		{
+			/* prints the current working directory */
+			printf("%s", getcwd(buffer_pwd, BUF_PWD));
+			printf("$ ");
+		}
 		input = get_sh_input(); /* Get input form the stdin */
 		args = get_sh_tokens(input); /* splits the 'input' into args*/
 		status = execute_sh(args, cmd); /* execute sh using args */
@@ -45,7 +47,7 @@ string get_sh_input(void)
 {
 	char ch;
 	string buffer;
-	int buf_size = BUF_SIZE, i = 0;
+	int buf_size = BUF_SIZE, index = 0;
 
 	buffer = malloc(sizeof(string) * buf_size);
 	if (buffer == NULL)
@@ -56,20 +58,20 @@ string get_sh_input(void)
 	while (ch != '\n')
 	{
 		ch = getc(stdin);
-		buffer[i] = ch;
-		i++;
-		if (i >= buf_size)
+		buffer[index] = ch;
+		index++;
+		if (index >= buf_size)
 		{
 			buf_size += BUF_SIZE;
 			buffer = realloc(buffer, sizeof(string) * buf_size);
 			if (buffer == NULL)
 			{
-				perror("Error: allocation error");
+				perror("Error: reallocation error");
 				exit(EXIT_FAILURE);
 			}
 		}
 	}
-	close(ch);
+
 	return (buffer);
 }
 
@@ -145,7 +147,7 @@ int execute_sh(char **args, char *cmd)
 	{
 		if (strcmp(args[0], builtin_str[i]) == 0)
 		{
-			return ((*builtin_func[i])(args));
+			return (builtin_func[i](args));
 		}
 	}
 
@@ -162,20 +164,13 @@ int execute_sh(char **args, char *cmd)
  */
 int init_sh(char **args, char *cmd)
 {
-		char *envp[] = {
-		"Home=/",
-		"PATH=/bin:/usr/bin",
-		"TERM=xterm",
-		"LANG=C.UTF-8",
-		NULL
-	};
-	pid_t child_pid, ppid;
+	pid_t child_pid;
 	int status;
 
 	child_pid = fork(); /* Create a child process from parent */
 	if (child_pid == 0) /* if fork is successful */
 	{
-		if (execve(args[0], args, envp) == -1)
+		if (execve(args[0], args, environ) == -1)
 		{
 			perror(cmd);
 			exit(EXIT_FAILURE);
@@ -191,10 +186,9 @@ int init_sh(char **args, char *cmd)
 			waitpid(child_pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
-	ppid = getpid();
 	if (!isatty(fileno(stdin)))
 	{
-		return (kill(ppid, SIGINT));
+		return (0);
 	}
 
 	return (1);

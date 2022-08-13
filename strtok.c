@@ -4,7 +4,7 @@
  * David Bakare
  */
 
-#include "main.h"
+#include "shell.h"
 
 /**
  * _strtok - breaks a string into a sequence of zero or more non-empty tokens.

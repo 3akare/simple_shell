@@ -23,6 +23,7 @@
 #define DELIM " \t\n\r\a"
 
 typedef char *string; /* redefining char pointer type as "string", :)*/
+extern char **environ;
 
 /* helper functions */
 
@@ -43,5 +44,6 @@ int init_sh(char **args, char *cmd);
 
 int shell_cd(char **args);
 int shell_exit(char **args);
+int sh_exit(int pid);
 
 #endif

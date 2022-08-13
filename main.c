@@ -4,7 +4,7 @@
  * David Bakare
  */
 
-#include "main.h"
+#include "shell.h"
 
 /**
  * main - Runs a simple UNIX command interpreter

@@ -4,7 +4,7 @@
  * David Bakare
  */
 
-#include "main.h"
+#include "shell.h"
 
 /**
  * _putchar - prints out a single character
@@ -68,3 +68,9 @@ void bin_check(char **args, char **envp)
 		exit(EXIT_FAILURE); /* Exits child process cleanly */
 	}
 }
+
+/*
+*int sh_exit(int pid){
+*	return kill(pid, SIGINT);
+*}
+*/
