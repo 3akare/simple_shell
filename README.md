@@ -1,57 +1,44 @@
-# Shelly - Simple Shell
+# hsh - Simple Shell
+A simple UNIX command interpreter that reads commnads from standard input and executes them.
 
-**Shelly** is a simple UNIX command language interpreter that reads commands from either a file or standard input and executes them.
-
-# Invocation
-
-To invoke **shelly**, complie all `.c` files in the repository and run the resulting executable:
-```
-gcc -Wall -pedantic -Werror -Wextra -std=gnu89 *.c -o shelly
-alias shelly="./shelly"
-shelly
-```
-or 
+## Compliation
+Use, 
 
 ```
-./run.sh
+gcc @flags *.c -o hsh 
 ```
 
-# Usage
-
-`ls`- list directories content
+to compile all `.c` files in the repository and,
 
 ```
-/home/bakare/simple_shell$ ls
-AUTHORS a.out  helper.c  main.h  strtok.c ...
+./hsh
 ```
-`pwd` - print name of current/working directory
-```
-/home/bakare/simple_shell$ pwd
-/home/bakare/simple_shell
-```
-`cat` - concatenate files and print on the standard output
-```
-/home/bakare/simple_shell$ cat AUTHORS
-#This file contains all individuals that contributed content to this re...
-```
-# Builtin functions
 
-`cd` - change current/working directory
-```
-/home/bakare/simple_shell$ pwd
-/home/bakare/simple_shell
-/home/bakare/simple_shell$ cd ..
-/home/bakare$ pwd
-/home/bakare
-/home/bakare$
-```
-`Exit` - cause normal process termination
-```
-/home/bakare/simple_shell$ exit
-```
-# Authors #
-* David Bakare
-* Michael Rowland
+to run the resulting executable.
 
-# Acknowledgemnts #
-This project was written as part of the curriculum for ALX-SE program
+**hsh** can be invoked non-interactively. If **hsh** is invoked with standard input not connected to a terminal, it reads and executes received commands in order.
+
+Example:
+```
+$ echo "/bin/ls" | ./hsh
+hsh main.c shell.c test_ls_2
+$
+$ cat test_ls_2
+/bin/ls
+/bin/ls
+$
+$ cat test_ls_2 | ./hsh
+hsh main.c shell.c test_ls_2
+hsh main.c shell.c test_ls_2
+$
+```
+If **shellby** is invoked with standard input connected to a terminal (determined by [isatty](https://linux.die.net/man/3/isatty)(3)), an *interactive* shell is opened. When executing interactively, **shellby** displays the prompt `$ ` when it is ready to read a command.
+
+```
+$ ./hsh
+($) /bin/ls
+hsh main.c shell.c
+($)
+($) exit
+$
+```

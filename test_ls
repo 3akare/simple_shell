@@ -1,2 +1,5 @@
-/bin/ls
-/bin/ls
+/bin/ls -l
+/bin/ls -al
+/bin/ls -F
+/bin/pwd
+/bin/pwd

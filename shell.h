@@ -1,49 +1,23 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef _SHELL_H_
+#define _SHELL_H_
 
-/*
- * File: main.h
- * Auth: Michael Rowland
- * David Bakare
- */
+#define DELIM " \n\a\t\r"
+#define TOK_BUF_SIZE 4
 
 #include <stdio.h>
-#include <sys/stat.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
 #include <string.h>
-#include <errno.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
-
-#define BUF_SIZE 100
-#define TOK_BUF_SIZE 4
-#define BUF_PWD 100
-#define DELIM " \t\n\r\a"
-
-typedef char *string; /* redefining char pointer type as "string", :)*/
-extern char **environ;
-
-/* helper functions */
-
-int _putchar(int c);
 unsigned int is_delim(char c, char *delim);
-char *_strtok(char *str, char *delim);
-void bin_check(char **args, char **envp);
-
-/* shell functions - main shell functions */
-
-void start_shell(char *cmd);
-char *get_sh_input(void);
 char **get_sh_tokens(char *line);
-int execute_sh(char **args, char *cmd);
-int init_sh(char **args, char *cmd);
+int non_interactive_mode(char **argv);
+char *_strtok(char *str, char *delim);
 
-/* builtin functions */
+/*  error handlers */
 
-int shell_cd(char **args);
-int shell_exit(char **args);
-int sh_exit(int pid);
+void exit_error_non_interactive(char *str, char *str2);
 
 #endif

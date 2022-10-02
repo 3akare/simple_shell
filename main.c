@@ -1,20 +1,52 @@
-/*
- * File: main.c
- * Auth: Michael Rowland
- * David Bakare
- */
-
 #include "shell.h"
 
 /**
- * main - Runs a simple UNIX command interpreter
- * @argc: The number of command line arguments supplied to the program
- * @argv: An array of pointers containing command line arguments
+ * non_interactive_mode - enables the shell to work in non-interactive mode
  *
- * Return: success (0), fail (1)
+ * @argv: an array of strings
+ * Return: Always Successful
  */
-int main(int __attribute__((unused)) argc, char **argv)
+
+int non_interactive_mode(char **argv)
 {
-	start_shell(argv[0]); /*run shell loop until exit condition is met*/
-	exit(EXIT_SUCCESS);
+	size_t size = 10;
+	pid_t child_pid;
+	int status, success = 0;
+	char *lineptr = malloc(100 * sizeof(char));
+	char new_lineptr[100];
+	char **arguments;
+
+	while (getline(&lineptr, &size, stdin) != -1)
+	{
+		strcpy(new_lineptr, lineptr);
+		arguments = get_sh_tokens(new_lineptr);
+		if (arguments == NULL)
+			exit_error_non_interactive(argv[0], new_lineptr);
+		child_pid = fork();
+		if (child_pid == 0)
+		{
+			success = execvp(arguments[0], arguments);
+			if (success == -1)
+				exit_error_non_interactive(argv[0], new_lineptr);
+		}
+		else
+			wait(&status);
+	}
+	return (0);
+}
+
+
+/**
+ * main - The main function of the shell
+ *
+ * @ac: count of CMD line arguments vectors
+ * @argv: an array of CMD line argument vectors
+ * Return: Always Succesful
+ */
+
+int main(int __attribute__((unused)) ac, char *argv[])
+{
+	if (isatty(STDIN_FILENO) != 1)
+		non_interactive_mode(argv);
+	return (0);
 }

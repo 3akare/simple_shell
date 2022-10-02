@@ -1,9 +1,3 @@
-/*
- * File: strtok.c
- * Auth: Michael Rowland
- * David Bakare
- */
-
 #include "shell.h"
 
 /**
@@ -14,16 +8,15 @@
  * Return: a string
  */
 
-string _strtok(string str, string delim)
+char *_strtok(char *str, char *delim)
 {
-	static string backup_string;
-	string ret;
+	static char *backup_string;
+	char *ret;
 
 	if (!str)
-		str = backup_string;   /* checks if str is NULL */
+		str = backup_string;
 	if (!str)
 		return (NULL);
-
 	while (1)
 	{
 		if (is_delim(*str, delim))
@@ -32,13 +25,10 @@ string _strtok(string str, string delim)
 			continue;
 		}
 		if (*str == '\0')
-		{
 			return (NULL);
-		}
 		break;
 	}
 	ret = str;
-
 	while (1)
 	{
 		if (*str == '\0')
@@ -54,4 +44,56 @@ string _strtok(string str, string delim)
 		}
 		str++;
 	}
+}
+
+/**
+ * is_delim - checks if @c is a delimeter
+ *
+ * @c: a character
+ * @delim: a MACRO containing delimeters
+ * Return: 1 if @c is a delimeter, else 0
+ */
+
+unsigned int is_delim(char c, char *delim)
+{
+	while (*delim != '\0')
+	{
+		if (c == *delim)
+			return (1);
+		delim++;
+	}
+	return (0);
+}
+
+/**
+ * get_sh_tokens - returns an array of strings with the help of _strtok
+ * @line: a string
+ *
+ * Return: an array of strings
+ */
+
+char **get_sh_tokens(char *line)
+{
+	int bufsize = TOK_BUF_SIZE, index = 0;
+	char **tokens = malloc(bufsize * sizeof(char *));
+	char *token;
+
+	if (tokens == NULL)
+	return (NULL);
+	token = _strtok(line, DELIM);
+	while (token != NULL)
+	{
+		tokens[index] = token;
+		index++;
+		if (index >= bufsize)
+		{
+			bufsize += TOK_BUF_SIZE;
+			tokens = realloc(tokens, bufsize * sizeof(char *));
+			if (tokens == NULL)
+				return (NULL);
+		}
+		token = _strtok(NULL, DELIM);
+	}
+	tokens[index] = NULL;
+	return (tokens);
 }
