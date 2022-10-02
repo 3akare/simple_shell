@@ -42,3 +42,9 @@ hsh main.c shell.c
 ($) exit
 $
 ```
+# Authors
+- [David Bakare](https://github.com/3akare)
+- [Michael Rowland](https://github.com/mykie88)
+
+# Acknowledgements
+This project was written as part of the curriculum for Holberton School.
