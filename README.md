@@ -1,5 +1,5 @@
 # hsh - Simple Shell
-A simple UNIX command interpreter that reads commnads from standard input and executes them.
+A simple UNIX command interpreter that reads commands from standard input and executes them.
 
 ## Compliation
 Use, 
