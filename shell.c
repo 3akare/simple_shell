@@ -44,13 +44,9 @@ int shell_execute(char **argv)
 
 void exit_command(char *str)
 {
-	size_t i = 0, success = 1;
-	char *new_str = malloc(strlen(str) * sizeof(char));
-
-	for (i = 0; i < strlen(str) && str[i] != '\n'; i++)
-		new_str[i] = str[i];
-
-	success = strcmp(new_str, "exit");
-	if (success == 0)
+	if (strcmp(str, "exit\n") == 0)
+	{
+		free(str);
 		exit(0);
+	}
 }
