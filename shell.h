@@ -16,6 +16,7 @@ char **get_sh_tokens(char *line);
 int non_interactive_mode(char **argv);
 char *_strtok(char *str, char *delim);
 int shell_execute(char **argv);
+void exit_command(char *str);
 
 /*  error handlers */
 

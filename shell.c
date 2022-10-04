@@ -18,6 +18,7 @@ int shell_execute(char **argv)
 	{
 		printf("$ ");
 		getline(&lineptr, &size, stdin);
+		exit_command(lineptr);
 		arguments = get_sh_tokens(lineptr);
 		if (arguments == NULL)
 			exit_error_non_interactive(argv[0], lineptr);
@@ -34,4 +35,26 @@ int shell_execute(char **argv)
 	free(lineptr);
 	free(arguments);
 	return (0);
+}
+
+/**
+ * exit_command - checks exit from stdout
+ * @str: a string
+ */
+
+void exit_command(char *str)
+{
+	size_t i = 0, success = 1;
+	char *new_str = malloc(strlen(str) * sizeof(char));
+
+	for (i = 0; i < strlen(str) && str[i] != '\n'; i++)
+		new_str[i] = str[i];
+
+	success = strcmp(new_str, "exit");
+	if (success == 0)
+	{
+		free(new_str);
+		free(str);
+		exit(0);
+	}
 }
