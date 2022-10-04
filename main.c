@@ -12,7 +12,7 @@ int non_interactive_mode(char **argv)
 	size_t size = 10;
 	pid_t child_pid;
 	int status, success = 0;
-	char *lineptr = malloc(50 * sizeof(char));
+	char *lineptr = malloc(100 * sizeof(char));
 	char new_lineptr[100];
 	char **arguments;
 
@@ -32,8 +32,7 @@ int non_interactive_mode(char **argv)
 		else
 			wait(&status);
 	}
-	free(lineptr);
-	exit(0);
+	return (0);
 }
 
 
@@ -45,13 +44,10 @@ int non_interactive_mode(char **argv)
  * Return: Always Succesful
  */
 
-int main(int __attribute__((unused)) ac, char __attribute__((unused))*argv[])
+int main(int __attribute__((unused)) ac, char *argv[])
 {
-	if (isatty(STDIN_FILENO) == 1)
-		shell_execute(argv);
-	else if (isatty(STDIN_FILENO == 0))
+	if (isatty(STDIN_FILENO) != 1)
 		non_interactive_mode(argv);
-	else
-		dprintf(STDERR_FILENO, "failed");
+	shell_execute(argv);
 	return (0);
 }
