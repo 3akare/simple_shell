@@ -9,7 +9,7 @@
 int shell_execute(char **argv)
 {
 	size_t size = 10;
-	char *lineptr = malloc(100 * sizeof(char));
+	char *lineptr = malloc(50 * sizeof(char));
 	char **arguments;
 	int success = 0, status;
 	pid_t child_pid;
@@ -32,5 +32,6 @@ int shell_execute(char **argv)
 			wait(&status);
 	}
 	free(lineptr);
+	free(arguments);
 	return (0);
 }

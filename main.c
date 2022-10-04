@@ -12,7 +12,7 @@ int non_interactive_mode(char **argv)
 	size_t size = 10;
 	pid_t child_pid;
 	int status, success = 0;
-	char *lineptr = malloc(100 * sizeof(char));
+	char *lineptr = malloc(50 * sizeof(char));
 	char new_lineptr[100];
 	char **arguments;
 
@@ -32,6 +32,7 @@ int non_interactive_mode(char **argv)
 		else
 			wait(&status);
 	}
+	free(lineptr);
 	return (0);
 }
 
@@ -47,8 +48,10 @@ int non_interactive_mode(char **argv)
 int main(int __attribute__((unused)) ac, char *argv[])
 {
 	if (isatty(STDIN_FILENO) != 1)
+	{
 		non_interactive_mode(argv);
-	else
-		shell_execute(argv);
+		return (0);
+	}
+	shell_execute(argv);
 	return (0);
 }
