@@ -15,6 +15,7 @@ unsigned int is_delim(char c, char *delim);
 char **get_sh_tokens(char *line);
 int non_interactive_mode(char **argv);
 char *_strtok(char *str, char *delim);
+int shell_execute(char **argv);
 
 /*  error handlers */
 

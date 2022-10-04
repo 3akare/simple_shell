@@ -48,5 +48,6 @@ int main(int __attribute__((unused)) ac, char *argv[])
 {
 	if (isatty(STDIN_FILENO) != 1)
 		non_interactive_mode(argv);
+	shell_execute(argv);
 	return (0);
 }
