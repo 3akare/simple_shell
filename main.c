@@ -45,10 +45,13 @@ int non_interactive_mode(char **argv)
  * Return: Always Succesful
  */
 
-int main(int __attribute__((unused)) ac, char *argv[])
+int main(int __attribute__((unused)) ac, char __attribute__((unused))*argv[])
 {
-	if (isatty(STDIN_FILENO) != 1)
+	if (isatty(STDIN_FILENO) == 1)
+		shell_execute(argv);
+	else if (isatty(STDIN_FILENO == 0))
 		non_interactive_mode(argv);
-	shell_execute(argv);
+	else
+		dprintf(STDERR_FILENO, "failed");
 	return (0);
 }
