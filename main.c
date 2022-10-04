@@ -19,6 +19,7 @@ int non_interactive_mode(char **argv)
 	while (getline(&lineptr, &size, stdin) != -1)
 	{
 		strcpy(new_lineptr, lineptr);
+		exit_command(new_lineptr);
 		arguments = get_sh_tokens(new_lineptr);
 		if (arguments == NULL)
 			exit_error_non_interactive(argv[0], new_lineptr);

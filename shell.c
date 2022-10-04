@@ -52,9 +52,5 @@ void exit_command(char *str)
 
 	success = strcmp(new_str, "exit");
 	if (success == 0)
-	{
-		free(new_str);
-		free(str);
 		exit(0);
-	}
 }
