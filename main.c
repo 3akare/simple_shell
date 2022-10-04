@@ -33,7 +33,7 @@ int non_interactive_mode(char **argv)
 			wait(&status);
 	}
 	free(lineptr);
-	return (0);
+	exit(0);
 }
 
 
@@ -48,10 +48,7 @@ int non_interactive_mode(char **argv)
 int main(int __attribute__((unused)) ac, char *argv[])
 {
 	if (isatty(STDIN_FILENO) != 1)
-	{
 		non_interactive_mode(argv);
-		return (0);
-	}
 	shell_execute(argv);
 	return (0);
 }
