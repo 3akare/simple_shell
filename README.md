@@ -19,7 +19,7 @@ to run the resulting executable.
 **hsh** can be invoked non-interactively. If **hsh** is invoked with standard input not connected to a terminal, it reads and executes received commands in order.
 
 Example:
-```
+```shell
 $ echo "/bin/ls" | ./hsh
 hsh main.c shell.c test_ls_2
 $
@@ -34,7 +34,7 @@ $
 ```
 If **hsh** is invoked with standard input connected to a terminal (determined by [isatty](https://linux.die.net/man/3/isatty)(3)), an *interactive* shell is opened. When executing interactively, **hsh** displays the prompt `$ ` when it is ready to read a command.
 
-```
+```shell
 $ ./hsh
 ($) /bin/ls
 hsh main.c shell.c
